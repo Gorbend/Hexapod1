@@ -1,0 +1,260 @@
+// This code is a WIP, it will be improved upon, and i will add new features as i get better, and experiment more with my project
+
+
+#include <Servo.h>
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+
+Adafruit_PWMServoDriver servos = Adafruit_PWMServoDriver(0x40);
+
+// Servo declaration
+Servo Servo_Right_Upper_Shoulder_1;
+Servo Servo_Right_Upper_Leg_2;
+Servo Servo_Right_Middle_Shoulder_3;
+Servo Servo_Right_Middle_leg_4;
+Servo Servo_Right_Lower_Shoulder_5;
+Servo Servo_Right_Lower_leg_6;
+Servo Servo_Left_Lower_Shoulder_7;
+Servo Servo_Left_Lower_Leg_8;
+Servo Servo_Left_Middle_Shoulder_9;
+Servo Servo_Left_Middle_Leg_10;
+Servo Servo_Left_Upper_Shoulder_11;
+Servo Servo_Left_Upper_Leg_12;
+
+
+void setup() {
+  
+Serial.begin (9600);
+servos.begin();
+servos.setPWMFreq(60); 
+
+int val;
+int state=0;
+int pos1;
+int pos2;
+int pos3;
+int pos4;
+int legdown;
+
+//attaching the servos
+Servo_Right_Upper_Shoulder_1.attach(1);
+Servo_Right_Upper_Leg_2.attach(2);
+Servo_Right_Middle_Shoulder_3.attach(3);
+Servo_Right_Middle_leg_4.attach(4);
+Servo_Right_Lower_Shoulder_5.attach(5);
+Servo_Right_Lower_leg_6.attach(6);
+Servo_Left_Lower_Shoulder_7.attach(7);
+Servo_Left_Lower_Leg_8.attach(8);
+Servo_Left_Middle_Shoulder_9.attach(9);
+Servo_Left_Middle_Leg_10.attach(10);
+Servo_Left_Upper_Shoulder_11.attach(11);
+Servo_Left_Upper_Leg_12.attach(12);
+
+//Lifting the first legs to avoid a bad loop
+// 1. Legs 2,6,10 up
+for(pos1=0; pos1<=30; pos1++)
+{
+  Servo_Right_Upper_Leg_2.write(pos1);
+  Servo_Right_Lower_leg_6.write(pos1);
+  Servo_Left_Middle_Leg_10.write(pos1);
+  delay(100);
+}
+delay(1000);
+
+
+// The initial positions
+Servo_Right_Upper_Shoulder_1.write(0);
+Servo_Right_Upper_Leg_2.write(45);
+Servo_Right_Middle_Shoulder_3.write(0);
+Servo_Right_Middle_leg_4.write(45);
+Servo_Right_Lower_Shoulder_5.write(0);
+Servo_Right_Lower_leg_6.write(45);
+Servo_Left_Lower_Shoulder_7.write(0);
+Servo_Left_Lower_Leg_8.write(45);
+Servo_Left_Middle_Shoulder_9.write(0);
+Servo_Left_Middle_Leg_10.write(45);
+Servo_Left_Upper_Shoulder_11.write(0);
+Servo_Left_Upper_Leg_12.write(45);
+
+}
+
+// Going forward
+
+void Forward(){
+int pos1;
+int pos2;
+int pos3;
+int pos4;
+// 2. Shoulders 1,5,9 forward
+for(pos2=0; pos2<=45; pos2++)
+{
+  Servo_Right_Upper_Shoulder_1.write(pos2);
+  Servo_Right_Lower_Shoulder_5.write(pos2);
+  Servo_Left_Middle_Shoulder_9.write(pos2);
+  delay(100);
+}
+delay(1000);
+// 3. Legs 2,6,10 down
+for(pos1=30; pos1>=0; pos1--)
+{
+  Servo_Right_Upper_Leg_2.write(pos1);
+  Servo_Right_Lower_leg_6.write(pos1);
+  Servo_Left_Middle_Leg_10.write(pos1);
+  delay(100);
+}
+delay(1000);
+// 4. Legs 4,8,12 up
+for(pos3=0; pos3<=30; pos3++)
+{
+  Servo_Right_Middle_leg_4.write(pos3);
+  Servo_Left_Lower_Leg_8.write(pos3);
+  Servo_Left_Upper_Leg_12.write(pos3);
+  delay(100);
+}
+delay(1000);
+// 5. Shoulders 1,5,9 backwards
+for(pos2=45; pos2>=0; pos2--)
+{
+  Servo_Right_Upper_Shoulder_1.write(pos2);
+  Servo_Right_Lower_Shoulder_5.write(pos2);
+  Servo_Left_Middle_Shoulder_9.write(pos2);
+  delay(100);
+}
+delay(1000);
+// 6. shoulders 3,7,11 forward
+for(pos4=0; pos4<=45; pos4++)
+{
+  Servo_Right_Middle_Shoulder_3.write(pos4);
+  Servo_Left_Lower_Shoulder_7.write(pos4);
+  Servo_Left_Upper_Shoulder_11.write(pos4);
+  delay(100);
+}
+delay(1000);
+// 7. Legs 4,8,12 down
+for(pos3=30; pos3>=0; pos3--)
+{
+  Servo_Right_Middle_leg_4.write(pos3);
+  Servo_Left_Lower_Leg_8.write(pos3);
+  Servo_Left_Upper_Leg_12.write(pos3);
+  delay(100);
+}
+delay(1000);
+// 8. Legs 2,6,12 up
+for(pos1=0; pos1<=30; pos1++)
+{
+  Servo_Right_Upper_Leg_2.write(pos1);
+  Servo_Right_Lower_leg_6.write(pos1);
+  Servo_Left_Middle_Leg_10.write(pos1);
+  delay(100);
+}
+delay(1000);
+// 9. Shoulders 3,7,11 backwards
+for(pos4=45; pos4>=0; pos4--)
+{
+  Servo_Right_Middle_Shoulder_3.write(pos4);
+  Servo_Left_Lower_Shoulder_7.write(pos4);
+  Servo_Left_Upper_Shoulder_11.write(pos4);
+  delay(100);
+}
+delay(1000);
+}
+//standing up
+void StandUp () {
+int legdown;
+for(legdown=45; legdown>=0; legdown--)
+{
+  Servo_Right_Upper_Leg_2.write(legdown);
+  Servo_Right_Middle_leg_4.write(legdown);
+  Servo_Right_Lower_leg_6.write(legdown);
+  Servo_Left_Lower_Leg_8.write(legdown);
+  Servo_Left_Middle_Leg_10.write(legdown);
+  Servo_Left_Upper_Leg_12.write(legdown);
+  delay(100);
+}
+}
+// Sitting down
+void SitDown(){
+int legdown;
+for(legdown=0; legdown<=45; legdown--)
+{
+  Servo_Right_Upper_Leg_2.write(legdown);
+  Servo_Right_Middle_leg_4.write(legdown);
+  Servo_Right_Lower_leg_6.write(legdown);
+  Servo_Left_Lower_Leg_8.write(legdown);
+  Servo_Left_Middle_Leg_10.write(legdown);
+  Servo_Left_Upper_Leg_12.write(legdown);
+  delay(100);  
+}
+}
+void Stop(){
+Servo_Right_Upper_Shoulder_1.write(0);
+Servo_Right_Upper_Leg_2.write(0);
+Servo_Right_Middle_Shoulder_3.write(0);
+Servo_Right_Middle_leg_4.write(0);
+Servo_Right_Lower_Shoulder_5.write(0);
+Servo_Right_Lower_leg_6.write(0);
+Servo_Left_Lower_Shoulder_7.write(0);
+Servo_Left_Lower_Leg_8.write(0);
+Servo_Left_Middle_Shoulder_9.write(0);
+Servo_Left_Middle_Leg_10.write(0);
+Servo_Left_Upper_Shoulder_11.write(0);
+Servo_Left_Upper_Leg_12.write(0);
+}
+void Turn_Left() {
+
+
+}
+
+void loop() {
+  int state;
+  if (Serial.available())
+  {
+    
+    char val = Serial.read();
+    switch(val)
+    {
+    case 'W':                     //Forwards
+      {
+        if(state == 1)
+        {
+        Forward();
+        }
+        break;
+      }
+    case 'Q':                    //Standing Up
+      {
+        state = 1;
+        StandUp();
+        break;
+      }
+    case 'E':                     //Sitting down
+      {
+        state = 0;
+        SitDown();
+        
+        break;
+      }
+    case 'A':                   //Rotating to the left
+      {
+        if(state == 1)
+        {
+        Turn_Left();
+        }
+        break;
+      }
+    case 'D':                   //Rotating to the right
+      {
+        if(state == 1)
+        {
+        Turn_Right();
+        }
+        break;
+      }
+    case 'P':
+      {
+        Stop();
+      }
+    }
+
+  }
+} 
